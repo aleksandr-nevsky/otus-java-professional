@@ -1,6 +1,8 @@
 package homework;
 
-public class Customer {
+import java.util.Objects;
+
+public class Customer implements Comparable<Customer> {
     private final long id;
     private String name;
     private long scores;
@@ -11,6 +13,12 @@ public class Customer {
         this.id = id;
         this.name = name;
         this.scores = scores;
+    }
+
+    public Customer(Customer customer) {
+        this.id = customer.id;
+        this.name = customer.name;
+        this.scores = customer.scores;
     }
 
     public long getId() {
@@ -46,19 +54,17 @@ public class Customer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Customer customer = (Customer) o;
-
-        if (id != customer.id) return false;
-        if (scores != customer.scores) return false;
-        return name != null ? name.equals(customer.name) : customer.name == null;
+        return id == customer.id;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (int) (scores ^ (scores >>> 32));
-        return result;
+        return Objects.hash(id);
+    }
+
+    @Override
+    public int compareTo(Customer o) {
+        return Long.compare(this.scores, o.getScores());
     }
 }
