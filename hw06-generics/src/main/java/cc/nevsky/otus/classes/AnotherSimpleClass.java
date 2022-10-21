@@ -1,10 +1,14 @@
-package cc.nevsky.otus;
+package cc.nevsky.otus.classes;
 
 import cc.nevsky.otus.annotations.After;
 import cc.nevsky.otus.annotations.Before;
 import cc.nevsky.otus.annotations.Test;
 
-public class AnotherTestClass {
+/**
+ * Класс для тестирования с методом вызывающим исключение.
+ */
+@SuppressWarnings("unused")
+public class AnotherSimpleClass {
 
     @Before
     public void beforeMethod() {
