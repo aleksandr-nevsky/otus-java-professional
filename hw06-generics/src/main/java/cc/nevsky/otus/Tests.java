@@ -29,12 +29,12 @@ public class Tests {
 
     /**
      * Запуск тестов.
+     *
      * @param className полное имя класса.
      */
     public void run(String className) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, ClassNotFoundException {
         Class<?> clazz = Class.forName(className);
         Constructor<?> constructor = clazz.getConstructor();
-        Object instance = constructor.newInstance();
 
         List<Method> methodsAnnotatedBefore = getAnnotationMethods(clazz, Before.class);
         List<Method> methodsAnnotatedTest = getAnnotationMethods(clazz, Test.class);
@@ -45,23 +45,23 @@ public class Tests {
         }
 
         try {
-            runBefore(methodsAnnotatedBefore, instance);
-            runTests(methodsAnnotatedTest, instance);
+            runBefore(methodsAnnotatedBefore, constructor);
+            runTests(methodsAnnotatedTest, constructor);
         } finally {
-            runAfter(methodsAnnotatedAfter, instance);
+            runAfter(methodsAnnotatedAfter, constructor);
         }
     }
 
-    private void runBefore(List<Method> methodsAnnotatedBefore, Object instance) throws InvocationTargetException, IllegalAccessException {
+    private void runBefore(List<Method> methodsAnnotatedBefore, Constructor<?> constructor) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         if (methodsAnnotatedBefore.size() == 1) {
-            methodsAnnotatedBefore.get(0).invoke(instance);
+            methodsAnnotatedBefore.get(0).invoke(constructor.newInstance());
         }
     }
 
-    private void runTests(List<Method> methodsAnnotatedTest, Object instance) {
+    private void runTests(List<Method> methodsAnnotatedTest, Constructor<?> constructor) {
         methodsAnnotatedTest.forEach(m -> {
             try {
-                m.invoke(instance);
+                m.invoke(constructor.newInstance());
                 success += 1;
             } catch (Exception e) {
                 fail += 1;
@@ -70,9 +70,9 @@ public class Tests {
         });
     }
 
-    private void runAfter(List<Method> methodsAnnotatedAfter, Object instance) throws InvocationTargetException, IllegalAccessException {
+    private void runAfter(List<Method> methodsAnnotatedAfter, Constructor<?> constructor) throws InvocationTargetException, IllegalAccessException, InstantiationException {
         if (methodsAnnotatedAfter.size() == 1) {
-            methodsAnnotatedAfter.get(0).invoke(instance);
+            methodsAnnotatedAfter.get(0).invoke(constructor.newInstance());
         }
     }
 
@@ -87,7 +87,4 @@ public class Tests {
 
         return annotatedMethods;
     }
-
-
-
 }
