@@ -1,0 +1,7 @@
+# -Xms256m
+# -Xmx256m
+java.lang.OutOfMemoryError
+
+# -Xms2048m
+# -Xmx2048m
+spend msec:6868, sec:6
