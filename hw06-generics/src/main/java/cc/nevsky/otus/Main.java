@@ -25,7 +25,18 @@ public class Main {
             fail += tests.getFail();
         }
 
-        System.out.printf("%s tests started. %s success, %s failed.%n", success + fail, success, fail);
+        System.out.printf("%s tests started. %s success, %s failed.%n\n\n", success + fail, success, fail);
+        success = 0;
+        fail = 0;
+
+        for (String className : classesForTests) {
+            MoreTests moreTests = new MoreTests();
+            moreTests.run(className);
+            success += moreTests.getSuccess();
+            fail += moreTests.getFail();
+        }
+
+        System.out.printf("%s more tests started. %s success, %s failed.%n", success + fail, success, fail);
     }
 
 }
