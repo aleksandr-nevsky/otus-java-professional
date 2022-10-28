@@ -29,6 +29,6 @@ public class SimpleClass {
 
     @After
     public void afterMethod() {
-        System.out.println("TestClass afterMethod this.hashCode() = " + this.hashCode());
+        System.out.printf("TestClass afterMethod this.hashCode() = %s%n%n", this.hashCode());
     }
 }

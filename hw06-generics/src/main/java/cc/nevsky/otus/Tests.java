@@ -44,35 +44,31 @@ public class Tests {
             throw new RuntimeException("To many Before or After annotation.");
         }
 
-        try {
-            runBefore(methodsAnnotatedBefore, constructor);
-            runTests(methodsAnnotatedTest, constructor);
-        } finally {
-            runAfter(methodsAnnotatedAfter, constructor);
-        }
-    }
-
-    private void runBefore(List<Method> methodsAnnotatedBefore, Constructor<?> constructor) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-        if (methodsAnnotatedBefore.size() == 1) {
-            methodsAnnotatedBefore.get(0).invoke(constructor.newInstance());
-        }
-    }
-
-    private void runTests(List<Method> methodsAnnotatedTest, Constructor<?> constructor) {
-        methodsAnnotatedTest.forEach(m -> {
+        for (Method method : methodsAnnotatedTest) {
+            Object instance = constructor.newInstance();
             try {
-                m.invoke(constructor.newInstance());
+                runBefore(methodsAnnotatedBefore, instance);
+
+                method.invoke(instance);
                 success += 1;
             } catch (Exception e) {
                 fail += 1;
-                System.out.println(e.getCause() + " in " + m);
+                System.out.println(e.getCause() + " in " + method);
+            } finally {
+                runAfter(methodsAnnotatedAfter, instance);
             }
-        });
+        }
     }
 
-    private void runAfter(List<Method> methodsAnnotatedAfter, Constructor<?> constructor) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    private void runBefore(List<Method> methodsAnnotatedBefore, Object instance) throws InvocationTargetException, IllegalAccessException {
+        if (methodsAnnotatedBefore.size() == 1) {
+            methodsAnnotatedBefore.get(0).invoke(instance);
+        }
+    }
+
+    private void runAfter(List<Method> methodsAnnotatedAfter, Object instance) throws InvocationTargetException, IllegalAccessException {
         if (methodsAnnotatedAfter.size() == 1) {
-            methodsAnnotatedAfter.get(0).invoke(constructor.newInstance());
+            methodsAnnotatedAfter.get(0).invoke(instance);
         }
     }
 
