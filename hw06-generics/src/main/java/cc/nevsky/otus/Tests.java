@@ -16,23 +16,12 @@ import java.util.List;
  */
 public class Tests {
 
-    private int success = 0;
-    private int fail = 0;
-
-    public int getSuccess() {
-        return success;
-    }
-
-    public int getFail() {
-        return fail;
-    }
-
     /**
      * Запуск тестов.
      *
      * @param className полное имя класса.
      */
-    public void run(String className) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, ClassNotFoundException {
+    public void run(String className, Counter counter) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, ClassNotFoundException {
         Class<?> clazz = Class.forName(className);
         Constructor<?> constructor = clazz.getConstructor();
 
@@ -50,9 +39,9 @@ public class Tests {
                 runBefore(methodsAnnotatedBefore, instance);
 
                 method.invoke(instance);
-                success += 1;
+                counter.addSuccess();
             } catch (Exception e) {
-                fail += 1;
+                counter.addFail();
                 System.out.println(e.getCause() + " in " + method);
             } finally {
                 runAfter(methodsAnnotatedAfter, instance);
