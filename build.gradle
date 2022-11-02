@@ -19,6 +19,7 @@ allprojects {
         }
         dependencies {
             dependency group: 'com.google.guava', name: 'guava', version: Versions.guava
+            dependency "org.ow2.asm:asm-commons:${Versions.asm}"
         }
     }
 }
