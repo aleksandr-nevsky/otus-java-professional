@@ -9,23 +9,19 @@ import java.util.List;
  * Класс для запуска.
  */
 public class Main {
-    private static int success = 0;
-    private static int fail = 0;
 
     public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-
+        Counter counter = new Counter();
         List<String> classesForTests = new ArrayList<>();
         classesForTests.add("cc.nevsky.otus.classes.SimpleClass");
         classesForTests.add("cc.nevsky.otus.classes.AnotherSimpleClass");
 
         for (String className : classesForTests) {
             Tests tests = new Tests();
-            tests.run(className);
-            success += tests.getSuccess();
-            fail += tests.getFail();
+
+            tests.run(className, counter);
         }
 
-        System.out.printf("%s tests started. %s success, %s failed.%n", success + fail, success, fail);
+        System.out.printf("%s tests started. %s success, %s failed.%n\n\n", counter.getSuccess() + counter.getFail(), counter.getSuccess(), counter.getFail());
     }
-
 }

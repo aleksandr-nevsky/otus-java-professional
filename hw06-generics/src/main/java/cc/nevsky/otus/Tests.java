@@ -16,23 +16,12 @@ import java.util.List;
  */
 public class Tests {
 
-    private int success = 0;
-    private int fail = 0;
-
-    public int getSuccess() {
-        return success;
-    }
-
-    public int getFail() {
-        return fail;
-    }
-
     /**
      * Запуск тестов.
      *
      * @param className полное имя класса.
      */
-    public void run(String className) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, ClassNotFoundException {
+    public void run(String className, Counter counter) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException, ClassNotFoundException {
         Class<?> clazz = Class.forName(className);
         Constructor<?> constructor = clazz.getConstructor();
 
@@ -44,35 +33,31 @@ public class Tests {
             throw new RuntimeException("To many Before or After annotation.");
         }
 
-        try {
-            runBefore(methodsAnnotatedBefore, constructor);
-            runTests(methodsAnnotatedTest, constructor);
-        } finally {
-            runAfter(methodsAnnotatedAfter, constructor);
-        }
-    }
-
-    private void runBefore(List<Method> methodsAnnotatedBefore, Constructor<?> constructor) throws InvocationTargetException, IllegalAccessException, InstantiationException {
-        if (methodsAnnotatedBefore.size() == 1) {
-            methodsAnnotatedBefore.get(0).invoke(constructor.newInstance());
-        }
-    }
-
-    private void runTests(List<Method> methodsAnnotatedTest, Constructor<?> constructor) {
-        methodsAnnotatedTest.forEach(m -> {
+        for (Method method : methodsAnnotatedTest) {
+            Object instance = constructor.newInstance();
             try {
-                m.invoke(constructor.newInstance());
-                success += 1;
+                runBefore(methodsAnnotatedBefore, instance);
+
+                method.invoke(instance);
+                counter.addSuccess();
             } catch (Exception e) {
-                fail += 1;
-                System.out.println(e.getCause() + " in " + m);
+                counter.addFail();
+                System.out.println(e.getCause() + " in " + method);
+            } finally {
+                runAfter(methodsAnnotatedAfter, instance);
             }
-        });
+        }
     }
 
-    private void runAfter(List<Method> methodsAnnotatedAfter, Constructor<?> constructor) throws InvocationTargetException, IllegalAccessException, InstantiationException {
+    private void runBefore(List<Method> methodsAnnotatedBefore, Object instance) throws InvocationTargetException, IllegalAccessException {
+        if (methodsAnnotatedBefore.size() == 1) {
+            methodsAnnotatedBefore.get(0).invoke(instance);
+        }
+    }
+
+    private void runAfter(List<Method> methodsAnnotatedAfter, Object instance) throws InvocationTargetException, IllegalAccessException {
         if (methodsAnnotatedAfter.size() == 1) {
-            methodsAnnotatedAfter.get(0).invoke(constructor.newInstance());
+            methodsAnnotatedAfter.get(0).invoke(instance);
         }
     }
 

@@ -33,6 +33,6 @@ public class AnotherSimpleClass {
 
     @After
     public void afterMethod() {
-        System.out.println("AnotherTestClass afterMethod this.hashCode() = " + this.hashCode());
+        System.out.printf("AnotherTestClass afterMethod this.hashCode() = %s%n%n", this.hashCode());
     }
 }
