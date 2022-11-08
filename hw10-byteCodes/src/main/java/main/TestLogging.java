@@ -14,6 +14,12 @@ public class TestLogging implements TestLoggingInterface {
 //        System.out.println("TestLogging.calculation2 there.");
     }
 
+//    @Log
+    @Override
+    public void calculation(int param, String a) {
+//        System.out.println("TestLogging.calculation3 there.");
+    }
+
     @Override
     public void otherMethod(int i) {
 //        System.out.println("TestLogging.otherMethod there.");

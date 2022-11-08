@@ -2,9 +2,11 @@ package main;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Ioc {
@@ -40,18 +42,33 @@ public class Ioc {
             }
         }
 
+        /**
+         * Проверка параметров методов на одинаковость.
+         *
+         * @return Если параметры методов одинаковые - true. Иначе false.
+         */
+        private boolean isMethodsParametersMatch(Method method1, Method method2) {
+            if (method1.getParameterCount() != method2.getParameterCount()) {
+                return false;
+            }
+
+            List<? extends Class<?>> classList1 = Arrays.stream(method1.getParameters()).map(Parameter::getType).toList();
+            List<? extends Class<?>> classList2 = Arrays.stream(method2.getParameters()).map(Parameter::getType).toList();
+
+            return classList1.equals(classList2);
+        }
+
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             String methodName = method.getName();
 
             annotatedMethods.forEach(m -> {
-                if (m.getName().equals(methodName) && m.getParameterCount() == args.length) {
+                if (m.getName().equals(methodName) && isMethodsParametersMatch(method, m)) {
                     System.out.printf("executed method: %s, param: %s%n", m.getName(), Arrays.toString(args));
                 }
             });
 
             return method.invoke(testLogging, args);
         }
-
     }
 }
