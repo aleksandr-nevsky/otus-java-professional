@@ -14,7 +14,6 @@ public class Atm {
     // Номиналы имеющихся купюр.
     private final SortedSet<Integer> denominationSet = new TreeSet<>();
 
-
     /**
      * Кладём коробку с купюрами в банкомат.
      *
@@ -62,10 +61,6 @@ public class Atm {
         throw new RuntimeException("ATM has no money.");
     }
 
-    private boolean isBoxContainBanknotes(int denomination, int needBanknotes) {
-        return banknotesBoxMap.get(denomination).getBanknotesCount() >= needBanknotes;
-    }
-
     /**
      * Получаем статистику по имеющимся деньгам.
      *
@@ -94,5 +89,16 @@ public class Atm {
         banknotesBoxMap.forEach((k, v) -> result.put(v.getBanknotesDenomination(), v.getBanknotesCount()));
 
         return result;
+    }
+
+    /**
+     * Проверяем есть ли в коробке с купюрами нужное количество купюр.
+     *
+     * @param denomination  Номинал купюр.
+     * @param needBanknotes Нужное количество купюр.
+     * @return Если есть нужное количество - true. Иначе false.
+     */
+    private boolean isBoxContainBanknotes(int denomination, int needBanknotes) {
+        return banknotesBoxMap.get(denomination).getBanknotesCount() >= needBanknotes;
     }
 }
