@@ -6,4 +6,7 @@ include 'L08-gc'
 include 'L10-byteCodes'
 include 'hw10-byteCodes'
 include 'hw12-atm'
+include 'hw15-patterns'
+include 'hw15-patterns:homework'
+findProject(':hw15-patterns:homework')?.name = 'homework'
 
