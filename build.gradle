@@ -16,10 +16,12 @@ allprojects {
     dependencyManagement {
         imports {
             mavenBom "org.springframework.boot:spring-boot-dependencies:2.7.2"
+            mavenBom "com.google.protobuf:protobuf-bom:3.21.1"
         }
         dependencies {
             dependency group: 'com.google.guava', name: 'guava', version: Versions.guava
             dependency "org.ow2.asm:asm-commons:${Versions.asm}"
+            dependency("org.glassfish:jakarta.json:${Versions.glassfishJson}")
         }
     }
 }
