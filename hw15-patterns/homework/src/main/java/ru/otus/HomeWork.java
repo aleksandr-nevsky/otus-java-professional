@@ -1,5 +1,12 @@
 package ru.otus;
 
+import ru.otus.handler.ComplexProcessor;
+import ru.otus.model.Message;
+import ru.otus.processor.homework.ProcessorChangeField11AndField12;
+import ru.otus.processor.homework.ProcessorWithException;
+
+import java.util.List;
+
 public class HomeWork {
 
     /*
@@ -20,5 +27,18 @@ public class HomeWork {
            по аналогии с Demo.class
            из элеменов "to do" создать new ComplexProcessor и обработать сообщение
          */
+
+        var processors = List.of(new ProcessorChangeField11AndField12(), new ProcessorWithException());
+
+        var complexProcessor = new ComplexProcessor(processors, ex -> System.out.println("Catch exception = " + ex));
+
+        var message = new Message.Builder(1L)
+                .field10("field10")
+                .field11("field11")
+                .field12("field12")
+                .build();
+
+        var result = complexProcessor.handle(message);
+        System.out.println("result:" + result);
     }
 }
