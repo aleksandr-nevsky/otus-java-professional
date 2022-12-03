@@ -25,7 +25,7 @@ public class ResourcesFileLoader implements Loader {
             }.getType());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return null;
+            throw new RuntimeException(e);
         }
         return measurementList;
     }
