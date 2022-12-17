@@ -14,3 +14,5 @@ findProject(':hw15-patterns:homework')?.name = 'homework'
 include 'L18-jdbc:demo'
 include 'L18-jdbc:homework'
 
+include 'L21-jpql:class-demo'
+include 'L21-jpql:homework'
