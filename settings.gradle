@@ -16,3 +16,5 @@ include 'L18-jdbc:homework'
 
 include 'L21-jpql:class-demo'
 include 'L21-jpql:homework'
+
+include 'L22-cache'
