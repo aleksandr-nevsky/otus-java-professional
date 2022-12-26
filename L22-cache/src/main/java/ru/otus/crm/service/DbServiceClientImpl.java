@@ -56,6 +56,7 @@ public class DbServiceClientImpl implements DBServiceClient {
             return transactionRunner.doInTransaction(connection -> {
                 var clientOptional = dataTemplate.findById(connection, id);
                 log.info("client: {}", clientOptional);
+                clientOptional.ifPresent(cli -> cache.put(cli.getId(), cli));
                 return clientOptional;
             });
         } else {

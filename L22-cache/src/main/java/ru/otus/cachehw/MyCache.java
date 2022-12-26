@@ -16,7 +16,7 @@ public class MyCache<K, V> implements HwCache<K, V> {
     public void put(K key, V value) {
         listeners.forEach(listener -> listener.notify(key, value, "put"));
 
-        cache.putIfAbsent(key, value);
+        cache.put(key, value);
 
     }
 
