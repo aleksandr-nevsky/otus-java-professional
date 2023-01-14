@@ -22,4 +22,4 @@ include 'L22-cache'
 include 'L25-webServer'
 
 include 'L26-di:class-demo'
-include 'L26-di:homework-template'
+include 'L26-di:homework'
