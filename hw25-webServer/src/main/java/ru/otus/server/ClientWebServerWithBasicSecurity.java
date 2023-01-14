@@ -12,6 +12,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.security.Constraint;
+import ru.otus.core.sessionmanager.TransactionManagerHibernate;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.services.TemplateProcessor;
 import ru.otus.servlet.ClientApiServlet;
@@ -27,16 +28,17 @@ public class ClientWebServerWithBasicSecurity implements ClientWebServer {
     private static final String CONSTRAINT_NAME = "auth";
     private static final String ROLE_NAME_USER = "user";
     protected final TemplateProcessor templateProcessor;
-    private final Gson gson;
     private final Server server;
     private final LoginService loginService;
+    private final TransactionManagerHibernate transactionManager;
 
 
-    public ClientWebServerWithBasicSecurity(int port, LoginService loginService, Gson gson, TemplateProcessor templateProcessor) {
-        this.gson = gson;
+    public ClientWebServerWithBasicSecurity(int port, LoginService loginService, TemplateProcessor templateProcessor,
+                                            TransactionManagerHibernate transactionManager) {
         this.templateProcessor = templateProcessor;
         server = new Server(port);
         this.loginService = loginService;
+        this.transactionManager = transactionManager;
     }
 
     @Override
@@ -108,8 +110,8 @@ public class ClientWebServerWithBasicSecurity implements ClientWebServer {
 
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.addServlet(new ServletHolder(new ClientsServlet(templateProcessor, gson)), "/clients");
-        servletContextHandler.addServlet(new ServletHolder(new ClientApiServlet()), "/api/client/add");
+        servletContextHandler.addServlet(new ServletHolder(new ClientsServlet(templateProcessor, transactionManager)), "/clients");
+        servletContextHandler.addServlet(new ServletHolder(new ClientApiServlet(transactionManager)), "/api/client/add/*");
         return servletContextHandler;
     }
 }

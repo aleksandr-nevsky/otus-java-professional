@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Пользователи</title>
+    <script>
+
+        function postClient() {
+            const clientName = document.getElementById('clientName').value
+            fetch('api/client/add/' + clientName)
+                .then(() => window.location.reload());
+        }
+    </script>
+</head>
+
+<body>
+<h4>Создание клиента</h4>
+<input type="text" id="clientName" placeholder="Имя клиента">
+<button onclick="postClient()">Создать</button>
+
+<script>
+</script>
+
+<h4>Список клиентов</h4>
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Имя</th>
+    </tr>
+    <#list clients>
+    <#items as client>
+    <tr>
+        <td style="width: 200px">${client.id}</td>
+        <td style="width: 200px">${client.name}</td>
+    </tr>
+    </#items>
+    </#list>
+
+</table>
+
+</body>
+</html>
