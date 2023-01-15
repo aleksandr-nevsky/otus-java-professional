@@ -82,4 +82,9 @@ public class Phone {
     public int hashCode() {
         return Objects.hash(id, phoneNumber);
     }
+
+    @Override
+    public String toString() {
+        return phoneNumber;
+    }
 }

@@ -4,8 +4,33 @@
     <script>
 
         function postClient() {
-            const clientName = document.getElementById('clientName').value
-            fetch('api/client/add/' + clientName)
+            const name = document.getElementById('name').value
+            const street = document.getElementById('street').value
+            const zipCode = document.getElementById('zipCode').value
+            const phones = document.getElementById('phones').value
+            let address = {
+                "street": street,
+                "zipCode": zipCode
+            };
+            let phonesArray = [];
+            phones.split(",").forEach((element) => {
+                let phone = {"phoneNumber": element}
+                phonesArray.push(phone)
+            })
+
+            let client = {
+                "name": name,
+                "address": address
+            };
+            client.phones = phonesArray;
+
+            fetch('api/client/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(client)
+            })
                 .then(() => window.location.reload());
         }
     </script>
@@ -13,7 +38,10 @@
 
 <body>
 <h4>Создание клиента</h4>
-<input type="text" id="clientName" placeholder="Имя клиента">
+<input type="text" id="name" placeholder="Имя клиента">
+<input type="text" id="street" placeholder="Адрес">
+<input type="text" id="zipCode" placeholder="Почтовый индекс">
+<input type="text" id="phones" placeholder="Телефоны через запятую">
 <button onclick="postClient()">Создать</button>
 
 <script>
@@ -24,12 +52,16 @@
     <tr>
         <th>Id</th>
         <th>Имя</th>
+        <th>Адрес</th>
+        <th>Телефоны</th>
     </tr>
     <#list clients>
     <#items as client>
     <tr>
         <td style="width: 200px">${client.id}</td>
         <td style="width: 200px">${client.name}</td>
+        <td style="width: 200px">${client.address}</td>
+        <td style="width: 200px">${client.phones?join(", ")}</td>
     </tr>
     </#items>
     </#list>
