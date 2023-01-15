@@ -35,12 +35,20 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
             for (Method method : methods) {
                 AppComponent appComponent = method.getAnnotation(AppComponent.class);
                 Object invokedMethod = callMethod(classInstance, method);
-                if (getAppComponent(appComponent.name()) != null) {
+                boolean isNotFound = true;
+                try {
+                    getAppComponent(appComponent.name());
+                } catch (RuntimeException e) {
+                    // It's ok there.
+                    isNotFound = false;
+                    appComponentsByName.put(appComponent.name(), invokedMethod);
+                    appComponents.add(invokedMethod);
+                }
+
+                if (isNotFound) {
                     throw new RuntimeException(appComponent.name() + " is present");
                 }
 
-                appComponentsByName.put(appComponent.name(), invokedMethod);
-                appComponents.add(invokedMethod);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -81,6 +89,10 @@ public class AppComponentsContainerImpl implements AppComponentsContainer {
 
     @Override
     public <C> C getAppComponent(String componentName) {
-        return (C) appComponentsByName.get(componentName);
+        Object objectToReturn = appComponentsByName.get(componentName);
+        if (objectToReturn == null) {
+            throw new RuntimeException("Component not found.");
+        }
+        return (C) objectToReturn;
     }
 }
