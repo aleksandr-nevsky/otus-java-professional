@@ -23,11 +23,9 @@ public class ClientsServlet extends HttpServlet {
     private final DbServiceClientImpl dbServiceClient;
 
 
-    public ClientsServlet(TemplateProcessor templateProcessor, TransactionManagerHibernate transactionManager) {
+    public ClientsServlet(TemplateProcessor templateProcessor, DbServiceClientImpl dbServiceClient) {
         this.templateProcessor = templateProcessor;
-
-        DataTemplateHibernate<Client> clientTemplate = new DataTemplateHibernate<>(Client.class);
-        dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);
+        this.dbServiceClient = dbServiceClient;
     }
 
     @Override

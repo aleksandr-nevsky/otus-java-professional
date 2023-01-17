@@ -15,6 +15,7 @@ import org.eclipse.jetty.util.security.Constraint;
 import ru.otus.core.repository.DataTemplateHibernate;
 import ru.otus.core.sessionmanager.TransactionManagerHibernate;
 import ru.otus.crm.model.Client;
+import ru.otus.crm.service.DbServiceClientImpl;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.services.TemplateProcessor;
 import ru.otus.servlet.ClientApiServlet;
@@ -32,17 +33,18 @@ public class ClientWebServerWithBasicSecurity implements ClientWebServer {
     protected final TemplateProcessor templateProcessor;
     private final Server server;
     private final LoginService loginService;
-    private final TransactionManagerHibernate transactionManager;
-    private final DataTemplateHibernate<Client> clientTemplate;
+    private final Gson gson;
+    private final DbServiceClientImpl dbServiceClient;
 
 
     public ClientWebServerWithBasicSecurity(int port, LoginService loginService, TemplateProcessor templateProcessor,
                                             TransactionManagerHibernate transactionManager) {
         this.templateProcessor = templateProcessor;
-        server = new Server(port);
+        this.server = new Server(port);
         this.loginService = loginService;
-        this.transactionManager = transactionManager;
-        clientTemplate = new DataTemplateHibernate<>(Client.class);
+
+        this.gson = new Gson();
+        this.dbServiceClient = new DbServiceClientImpl(transactionManager, new DataTemplateHibernate<>(Client.class));
     }
 
     @Override
@@ -113,8 +115,8 @@ public class ClientWebServerWithBasicSecurity implements ClientWebServer {
 
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.addServlet(new ServletHolder(new ClientsServlet(templateProcessor, transactionManager)), "/clients");
-        servletContextHandler.addServlet(new ServletHolder(new ClientApiServlet(transactionManager, clientTemplate)), "/api/client/*");
+        servletContextHandler.addServlet(new ServletHolder(new ClientsServlet(templateProcessor, dbServiceClient)), "/clients");
+        servletContextHandler.addServlet(new ServletHolder(new ClientApiServlet(gson, dbServiceClient)), "/api/client/*");
         return servletContextHandler;
     }
 }

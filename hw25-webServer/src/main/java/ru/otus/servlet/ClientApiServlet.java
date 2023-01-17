@@ -5,8 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ru.otus.core.repository.DataTemplateHibernate;
-import ru.otus.core.sessionmanager.TransactionManagerHibernate;
 import ru.otus.crm.model.Client;
 import ru.otus.crm.service.DbServiceClientImpl;
 
@@ -17,13 +15,13 @@ public class ClientApiServlet extends HttpServlet {
     private final DbServiceClientImpl dbServiceClient;
     private final Gson gson;
 
-    public ClientApiServlet(TransactionManagerHibernate transactionManager, DataTemplateHibernate<Client> clientTemplate) {
-        dbServiceClient = new DbServiceClientImpl(transactionManager, clientTemplate);
-        gson = new Gson();
+    public ClientApiServlet(Gson gson, DbServiceClientImpl dbServiceClient) {
+        this.dbServiceClient = dbServiceClient;
+        this.gson = gson;
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String clientJson = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
         Client newClient = gson.fromJson(clientJson, Client.class);
         dbServiceClient.saveClient(newClient);
