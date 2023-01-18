@@ -38,13 +38,12 @@ public class ClientWebServerWithBasicSecurity implements ClientWebServer {
 
 
     public ClientWebServerWithBasicSecurity(int port, LoginService loginService, TemplateProcessor templateProcessor,
-                                            TransactionManagerHibernate transactionManager) {
+                                            Gson gson, DbServiceClientImpl dbServiceClient) {
         this.templateProcessor = templateProcessor;
         this.server = new Server(port);
         this.loginService = loginService;
-
-        this.gson = new Gson();
-        this.dbServiceClient = new DbServiceClientImpl(transactionManager, new DataTemplateHibernate<>(Client.class));
+        this.gson = gson;
+        this.dbServiceClient = dbServiceClient;
     }
 
     @Override
