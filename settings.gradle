@@ -20,3 +20,6 @@ include 'L21-jpql:homework'
 include 'L22-cache'
 
 include 'hw25-webServer'
+
+include 'L26-di:class-demo'
+include 'L26-di:homework'
