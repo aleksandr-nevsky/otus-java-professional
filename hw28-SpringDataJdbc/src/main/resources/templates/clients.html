@@ -48,25 +48,48 @@
 </script>
 
 <h4>Список клиентов</h4>
-<table border="1">
+<table class="clients" border="1">
+    <thead>
     <tr>
         <th>Id</th>
         <th>Имя</th>
         <th>Адрес</th>
         <th>Телефоны</th>
     </tr>
-    <#list clients>
-    <#items as client>
-    <tr>
-        <td style="width: 200px">${client.id}</td>
-        <td style="width: 200px">${client.name}</td>
-        <td style="width: 200px">${client.address}</td>
-        <td style="width: 200px">${client.phones?join(", ")}</td>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td style="width: 200px" th:text="${client.getId()}">1</td>
+        <td style="width: 200px" th:text="${client.getName()}">1</td>
+        <td style="width: 200px" th:text="${client.getAddress().getStreet()} + ' ' +  ${client.getAddress().getZipCode()}">1</td>
+        <td style="width: 200px">
+            <div th:each="phone : ${client.getPhones()}">
+                <span th:text="${phone.getPhoneNumber()}"></span><br>
+            </div>
+        </td>
     </tr>
-    </#items>
-    </#list>
-
+    </tbody>
 </table>
+
+<!--<table border="1">-->
+<!--    <tr>-->
+<!--        <th>Id</th>-->
+<!--        <th>Имя</th>-->
+<!--        <th>Адрес</th>-->
+<!--        <th>Телефоны</th>-->
+<!--    </tr>-->
+<!--    <#list clients>-->
+<!--    <#items as client>-->
+<!--    <tr>-->
+<!--        <td style="width: 200px">${client.id}</td>-->
+<!--        <td style="width: 200px">${client.name}</td>-->
+<!--        <td style="width: 200px">${client.address}</td>-->
+<!--        <td style="width: 200px">${client.phones?join(", ")}</td>-->
+<!--    </tr>-->
+<!--    </#items>-->
+<!--    </#list>-->
+
+<!--</table>-->
 
 </body>
 </html>

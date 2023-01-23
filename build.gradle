@@ -23,6 +23,7 @@ allprojects {
             dependency group: 'com.google.guava', name: 'guava', version: Versions.guava
             dependency "org.ow2.asm:asm-commons:${Versions.asm}"
             dependency("org.glassfish:jakarta.json:${Versions.glassfishJson}")
+            dependency("com.google.code.findbugs:jsr305:${Versions.jsr305}")
         }
     }
 }
