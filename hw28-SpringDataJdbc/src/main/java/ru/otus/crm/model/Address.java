@@ -1,61 +1,50 @@
 package ru.otus.crm.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import java.util.Objects;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
-@Table(name = "address")
-public class Address {
+
+@Table("address")
+public class Address implements Cloneable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq_gen")
-    @SequenceGenerator(name = "address_seq_gen", sequenceName = "address_sequence", allocationSize = 1)
-    private long id;
-
-    @Column(name = "street")
+    private Long id;
     private String street;
-
-    @Column(name = "zip_code")
     private String zipCode;
 
     public Address() {
     }
 
     public Address(String street, String zipCode) {
-        this.street = street;
-        this.zipCode = zipCode;
+        this(null, street, zipCode);
     }
 
-    public Address(long id, String street, String zipCode) {
+    @PersistenceCreator
+    public Address(Long id, String street, String zipCode) {
         this.id = id;
         this.street = street;
         this.zipCode = zipCode;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStreet() {
         return street;
     }
 
-    public String getZipCode() {
-        return zipCode;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getZipCode() {
+        return zipCode;
     }
 
     public void setZipCode(String zipCode) {
@@ -63,22 +52,11 @@ public class Address {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Address)) return false;
-        Address address = (Address) o;
-        return id == address.id &&
-                Objects.equals(street, address.street) &&
-                Objects.equals(zipCode, address.zipCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, street, zipCode);
-    }
-
-    @Override
     public String toString() {
-        return zipCode + ", " + street;
+        return "address{" +
+                "id=" + id +
+                ", street='" + street + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                '}';
     }
 }
