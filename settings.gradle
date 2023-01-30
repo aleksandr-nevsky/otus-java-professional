@@ -25,3 +25,5 @@ include 'L26-di:class-demo'
 include 'L26-di:homework'
 
 include 'hw28-SpringDataJdbc'
+include 'hw31-executors'
+
