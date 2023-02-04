@@ -27,3 +27,5 @@ include 'L26-di:homework'
 include 'hw28-SpringDataJdbc'
 include 'hw31-executors'
 
+include 'L32-concurrentCollections:ConcurrentCollections'
+include 'L32-concurrentCollections:QueueDemo'
