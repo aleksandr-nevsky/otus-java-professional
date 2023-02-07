@@ -29,3 +29,5 @@ include 'hw31-executors'
 
 include 'L32-concurrentCollections:ConcurrentCollections'
 include 'L32-concurrentCollections:QueueDemo'
+include 'hw33-multiprocess'
+
