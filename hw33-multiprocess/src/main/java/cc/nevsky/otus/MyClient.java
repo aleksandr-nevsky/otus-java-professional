@@ -23,7 +23,7 @@ public class MyClient {
 
     private static void readAndIncrement() throws InterruptedException {
         for (int currentValue = 0; currentValue < maxValue; currentValue++) {
-            int localVal = valueFromServer.get();
+            int localVal = valueFromServer.getAndSet(0);
 
             System.out.println("currentValue before add increment = " + currentValue);
             System.out.println("valueFromServer = " + localVal);
