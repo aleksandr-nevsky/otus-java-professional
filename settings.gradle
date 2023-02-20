@@ -31,3 +31,5 @@ include 'L32-concurrentCollections:ConcurrentCollections'
 include 'L32-concurrentCollections:QueueDemo'
 include 'hw33-multiprocess'
 
+include 'L38-webflux-chat:client-service'
+include 'L38-webflux-chat:datastore-service'
